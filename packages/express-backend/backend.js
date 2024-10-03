@@ -23,7 +23,7 @@ const users = {
         },
         {
             id: "yat999",
-            name: "Dees",
+            name: "Dee",
             job: "Aspiring actress",
         },
         {
@@ -43,9 +43,21 @@ const findUserByName = (name) => {
 const findUserById = (id) => 
     users["users_list"].find((user) => user["id"] === id);
 
+const findUserByJob = (job) => {
+    return users["users_list"].filter(
+        (user) => user["job"] === job
+    );
+};
+
 const addUser = (user) => {
     users["users_list"].push(user);
     return user;
+};
+
+const deleteUser = (userToRemove) => {
+    users["users_list"] = users["users_list"].filter(
+        (user) => user.id !== userToRemove.id
+    );
 };
 
 app.use(express.json());
@@ -75,10 +87,37 @@ app.get("/users/:id", (req, res) => {
     }
 });
 
+app.get("/users/:id/:job", (req, res) => {
+    const id = req.params["id"];
+    const job = req.params["job"];
+    let result = findUserById(id);
+    if (result === undefined) {
+        res.status(404).send("No user matches the requested ID");
+    } else {
+        let result = findUserByJob(job);
+        if (result === undefined) {
+            res.status(404).send("No user with the requested ID and matching job")
+        } else {
+            res.send(result)
+        };
+    };
+});
+
 app.post("/users", (req, res) => {
     const userToAdd = req.body;
     addUser(userToAdd);
     res.send();
+});
+
+app.delete("/users", (req, res) => {
+    const id = req.body.id;
+    const userToDelete = findUserById(id);
+    if (userToDelete !== undefined) {
+        deleteUser(userToDelete);
+        res.send();
+    } else {
+        res.status(404).send({ error: "User with matching id was not found" });
+    }
 });
 
 app.listen(port, () => {
