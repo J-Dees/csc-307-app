@@ -29,6 +29,10 @@ function MyApp() {
         return promise
     }
 
+    function deleteUser(person) {
+        
+    }
+
     const [characters, setCharacters] = useState([]);
 
     function removeOneCharacter(index) {
@@ -36,6 +40,11 @@ function MyApp() {
           return i !== index;
         });
         setCharacters(updated);
+        let id = characters[index].id
+        const promise = fetch("http://localhost:8000/users/" + id, {
+            method: "DELETE"
+        });
+        return promise
       }
     
     function updateList(person) {
