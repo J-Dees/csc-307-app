@@ -29,10 +29,6 @@ function MyApp() {
         return promise
     }
 
-    function deleteUser(person) {
-        
-    }
-
     const [characters, setCharacters] = useState([]);
 
     function removeOneCharacter(index) {
@@ -49,7 +45,14 @@ function MyApp() {
     
     function updateList(person) {
         postUser(person)
-            .then(() => setCharacters([...characters, person]))
+            .then((response) => {
+                if(response.status === 201) {
+                    return response.json();
+                } else {
+                    throw new Error("Failed to create user")
+                }
+            })
+            .then((newUser) => setCharacters([...characters, newUser]))
             .catch((error) => {
                 console.log(error);
             })

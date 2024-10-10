@@ -4,7 +4,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "npm run dev -w react-frontend"
+    "start": "npm -w react-frontend run dev",
+    "dev": "npm run dev -w express-backend"
   },
   "author": "",
   "license": "ISC",

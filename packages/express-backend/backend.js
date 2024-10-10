@@ -54,12 +54,12 @@ const findUserByJob = (job) => {
     );
 };
 
-const createUserId = (user) => {
+const createUserId = () => {
     let id = Math.floor(Math.random() * 1000);
     while (findUserById(id) !== undefined) {
         id = Math.floor(Math.random() * 1000)
     }
-    user.id = id.toString()
+    return id.toString()
 }
 
 const addUser = (user) => {
@@ -116,7 +116,7 @@ app.get("/users/:id/:job", (req, res) => {
 
 app.post("/users", (req, res) => {
     const userToAdd = req.body;
-    createUserId(userToAdd);
+    userToAdd.id = createUserId();
     addUser(userToAdd);
     res.status(201).send(userToAdd);
 });
@@ -126,7 +126,7 @@ app.delete("/users/:id", (req, res) => {
     const userToDelete = findUserById(id);
     if (userToDelete !== undefined) {
         deleteUser(userToDelete);
-        res.status(204).send();
+        res.status(202).send();
     } else {
         res.status(404).send({ error: "User with matching id was not found" });
     }
