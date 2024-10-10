@@ -1,8 +1,13 @@
 // backend.js
 import express from "express";
+import cors from "cors"
 
 const app = express();
 const port = 8000;
+
+app.use(cors());
+
+app.use(express.json());
 
 const users = {
     users_list: [
@@ -59,8 +64,6 @@ const deleteUser = (userToRemove) => {
         (user) => user.id !== userToRemove.id
     );
 };
-
-app.use(express.json());
 
 app.get("/", (req, res) => {
     res.send("Hello world");
